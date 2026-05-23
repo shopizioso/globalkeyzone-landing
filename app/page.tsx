@@ -1,62 +1,54 @@
+'use client'
+
+import { motion } from 'framer-motion'
+
+const products = [
+  {
+    title: 'Microsoft 365',
+    desc: 'Premium productivity ecosystem.',
+  },
+  {
+    title: 'Windows License',
+    desc: 'Original activation solutions.',
+  },
+  {
+    title: 'Google Workspace',
+    desc: 'Professional collaboration tools.',
+  },
+  {
+    title: 'AI Tools',
+    desc: 'Modern AI productivity platform.',
+  },
+]
+
 export default function Home() {
   return (
-    <main className="bg-black text-white min-h-screen">
-      <section className="min-h-screen flex items-center justify-center px-6">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 mb-6 text-sm text-white/70">
-              Premium Digital Workspace Solutions
-            </div>
+    <main className="bg-black text-white overflow-hidden">
+      {/* Background Glow */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-cyan-500/20 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-purple-500/20 blur-[150px] rounded-full" />
+      </div>
 
-            <h1 className="text-5xl md:text-7xl font-black leading-tight tracking-tight">
-              Modern Software.
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
-                Instant Delivery.
-              </span>
-            </h1>
+      {/* Navbar */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl border-b border-white/10 bg-black/40">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+          <h1 className="text-2xl font-bold">
+            GlobalKeyZone
+          </h1>
 
-            <p className="mt-8 text-lg text-white/70 max-w-xl leading-relaxed">
-              GlobalKeyZone provides premium digital products, software licenses,
-              and workspace solutions with secure automated delivery.
-            </p>
+          <nav className="hidden md:flex gap-8 text-white/60">
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">Features</a>
+            <a href="#">Contact</a>
+          </nav>
 
-            <div className="mt-10 flex gap-4">
-              <button className="px-7 py-4 rounded-2xl bg-white text-black font-semibold">
-                Explore Products
-              </button>
-
-              <button className="px-7 py-4 rounded-2xl border border-white/10 bg-white/5">
-                Learn More
-              </button>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="bg-white/5 border border-white/10 rounded-[40px] p-8">
-              <h3 className="text-2xl font-bold mb-8">
-                Premium Workspace Ecosystem
-              </h3>
-
-              <div className="space-y-4">
-                {[
-                  'Microsoft 365',
-                  'Windows License',
-                  'Google Workspace',
-                  'AI Productivity Tools',
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="p-4 rounded-2xl bg-black/30 border border-white/5"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <button className="px-5 py-2 rounded-full bg-white text-black font-semibold">
+            Explore
+          </button>
         </div>
-      </section>
-    </main>
-  )
-}
+      </header>
+
+      {/* Hero */}
+      <section className="min-h
