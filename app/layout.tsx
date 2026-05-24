@@ -1,8 +1,8 @@
-import './globals.css'
+import "./globals.css"
 
 export const metadata = {
-  title: 'GlobalKeyZone',
-  description: 'Premium Software Landing Page',
+  title: "GlobalKeyZone",
+  description: "AI Digital Infrastructure",
 }
 
 export default function RootLayout({
