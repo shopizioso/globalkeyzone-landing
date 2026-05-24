@@ -25,7 +25,11 @@ export default function AICore() {
     <div className="absolute inset-0 z-0">
       <Canvas camera={{ position: [0, 0, 4] }}>
         <ambientLight intensity={1.5} />
-        <directionalLight position={[2, 2, 2]} intensity={2} />
+
+        <directionalLight
+          position={[2, 2, 2]}
+          intensity={2}
+        />
 
         <CoreSphere />
 
