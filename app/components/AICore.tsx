@@ -23,7 +23,7 @@ function Orb() {
 
 export default function AICore() {
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 opacity-40"
 
       <Canvas camera={{ position: [0, 0, 4] }}>
 
