@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import AICore from './components/AICore'
 
 const products = [
   'Microsoft 365',
