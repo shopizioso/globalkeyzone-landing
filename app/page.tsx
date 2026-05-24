@@ -86,6 +86,7 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative min-h-screen flex items-center px-6 pt-40">
+        <AICore />
 
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
 
