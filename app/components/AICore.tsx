@@ -1,81 +1,127 @@
 "use client"
 
-import { Canvas, useFrame } from "@react-three/fiber"
+import { Canvas } from "@react-three/fiber"
 import {
+  Float,
   OrbitControls,
-  useGLTF,
   Environment,
-  Float
+  Sparkles,
+  Html,
 } from "@react-three/drei"
 
-import { Suspense, useRef } from "react"
-
-function Robot() {
-  const robot = useGLTF("/models/robot.glb")
-  const ref = useRef<any>()
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y =
-        Math.sin(state.clock.elapsedTime * 0.4) * 0.3
-
-      ref.current.position.y =
-        Math.sin(state.clock.elapsedTime) * 0.1
-    }
-  })
-
+function CoreSphere() {
   return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <primitive
-        ref={ref}
-        object={robot.scene}
-        scale={8}
-        position={[0, -6, 0]}
-      />
+    <Float
+      speed={2}
+      rotationIntensity={2}
+      floatIntensity={2}
+    >
+
+      {/* MAIN CORE */}
+      <mesh>
+        <sphereGeometry args={[1.4, 128, 128]} />
+
+        <meshStandardMaterial
+          color="#67e8f9"
+          emissive="#06b6d4"
+          emissiveIntensity={4}
+          roughness={0.05}
+          metalness={1}
+        />
+      </mesh>
+
+      {/* OUTER RING */}
+      <mesh rotation={[0.5, 0.5, 0]}>
+        <torusGeometry args={[2.2, 0.03, 32, 200]} />
+
+        <meshStandardMaterial
+          color="#38bdf8"
+          emissive="#0ea5e9"
+          emissiveIntensity={4}
+        />
+      </mesh>
+
+      {/* SECOND RING */}
+      <mesh rotation={[1.2, 0.3, 1]}>
+        <torusGeometry args={[2.8, 0.02, 32, 200]} />
+
+        <meshStandardMaterial
+          color="#a855f7"
+          emissive="#9333ea"
+          emissiveIntensity={5}
+        />
+      </mesh>
+
+      {/* INNER GLOW */}
+      <mesh>
+        <sphereGeometry args={[0.5, 64, 64]} />
+
+        <meshStandardMaterial
+          color="#ffffff"
+          emissive="#ffffff"
+          emissiveIntensity={8}
+        />
+      </mesh>
+
     </Float>
   )
 }
 
 export default function AICore() {
   return (
-    <div className="absolute inset-0 z-0 opacity-90">
-      <Canvas camera={{ position: [0, 0, 14], fov: 45 }}>
+    <div className="absolute inset-0 z-0 opacity-70">
 
-        <ambientLight intensity={4} />
+      <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
+
+        {/* LIGHTS */}
+        <ambientLight intensity={1.2} />
 
         <directionalLight
-          position={[10, 10, 10]}
-          intensity={6}
-          color="#60a5fa"
+          position={[5, 5, 5]}
+          intensity={3}
+          color="#67e8f9"
         />
 
         <pointLight
-          position={[-10, -10, -10]}
-          intensity={5}
+          position={[-5, -5, -5]}
+          intensity={4}
           color="#9333ea"
         />
 
-        <spotLight
-          position={[0, 15, 10]}
-          intensity={8}
-          angle={0.5}
-          penumbra={1}
+        {/* ENVIRONMENT */}
+        <Environment preset="city" />
+
+        {/* PARTICLES */}
+        <Sparkles
+          count={300}
+          scale={15}
+          size={3}
+          speed={0.4}
         />
 
-        <Environment preset="night" />
+        {/* CORE */}
+        <CoreSphere />
 
-        <Suspense fallback={null}>
-          <Robot />
-        </Suspense>
+        {/* FLOATING TEXT */}
+        <Html position={[0, -3.5, 0]} center>
+          <div className="text-cyan-300 text-sm tracking-[0.4em] uppercase opacity-70">
+            AI DIGITAL CORE
+          </div>
+        </Html>
 
+        {/* CAMERA ROTATION */}
         <OrbitControls
           enableZoom={false}
+          enablePan={false}
           autoRotate
           autoRotateSpeed={0.8}
-          enablePan={false}
         />
 
       </Canvas>
+
+      {/* EXTRA SCREEN GLOW */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.15),transparent_60%)]" />
+
     </div>
   )
 }
