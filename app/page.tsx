@@ -85,11 +85,12 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center px-6 pt-40">
-        <AICore />
+      
+<section className="relative min-h-screen overflow-hidden">
 
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+  <AICore />
 
+  <div className="relative z-10">
           {/* Left */}
           <div>
 
