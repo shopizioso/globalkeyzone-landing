@@ -26,8 +26,6 @@ export default function Home() {
             duration: 20,
             repeat: Infinity,
           }}
-          className="absolute top-[-200px] left-[-200px] w-[700px] h-[700px] rounded-full bg-cyan-500/20 blur-[180px]"
-        />
 
         <motion.div
           animate={{
@@ -38,8 +36,8 @@ export default function Home() {
             duration: 25,
             repeat: Infinity,
           }}
-          className="absolute bottom-[-300px] right-[-200px] w-[700px] h-[700px] rounded-full bg-purple-500/20 blur-[180px]"
-        />
+          
+    
 
       </div>
 
