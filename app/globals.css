@@ -4,10 +4,18 @@
 
 html,
 body {
-  background: #000 !important;
+  padding: 0;
+  margin: 0;
+  background: #000;
+  color: white;
   overflow-x: hidden;
+  font-family: sans-serif;
 }
 
-body {
-  color: white;
+* {
+  box-sizing: border-box;
+}
+
+canvas {
+  touch-action: none;
 }
