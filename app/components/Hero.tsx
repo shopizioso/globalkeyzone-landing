@@ -4,6 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import { useRef } from "react"
 import Image from "next/image"
 import AICore from "./AICore"
+import MagneticButton from "./MagneticButton"
+import HackerText from "./HackerText"
 
 export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null)
@@ -62,9 +64,19 @@ export default function Hero() {
                     style={{ opacity: coreOpacity }}
                     className="absolute inset-0 w-full h-full flex flex-col items-center justify-center will-change-opacity"
                 >
-                    <div className="absolute inset-0 z-[1]"><AICore /></div>
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,black_100%)] z-[2] opacity-80" />
-                    <div className="absolute inset-0 opacity-[0.03] z-[3] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+                    <div className="absolute inset-0 z-[1]"><AICore scrollProgress={scrollYProgress} /></div>
+                    
+                    {/* DIMMING OVERLAY: Darkens the 3D core so the text stays legible and pops out */}
+                    <motion.div 
+                        style={{ opacity: useTransform(scrollYProgress, [0.90, 0.95], [0.6, 1]) }}
+                        className="absolute inset-0 bg-black z-[2]" 
+                    />
+                    
+                    {/* VIGNETTE OVERLAY: Darkens the edges */}
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,black_100%)] z-[3] opacity-90" />
+                    
+                    {/* NOISE OVERLAY */}
+                    <div className="absolute inset-0 opacity-[0.03] z-[4] mix-blend-overlay pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
                 </motion.div>
 
                 {/* --- PRESENTATION SLIDES LAYER --- */}
@@ -77,28 +89,32 @@ export default function Hero() {
                         Phase 01
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black leading-tight text-white mb-6 tracking-tighter drop-shadow-2xl">
-                        Welcome to <br/>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">GlobalKeyZone</span>
+                        <HackerText text="Welcome to" progress={scrollYProgress} range={[0.10, 0.25]} /> <br/>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
+                            <HackerText text="GlobalKeyZone" progress={scrollYProgress} range={[0.15, 0.30]} />
+                        </span>
                     </h2>
                     <p className="max-w-2xl text-lg md:text-2xl text-zinc-300 drop-shadow-lg leading-relaxed">
                         Pusat ekosistem digital premium. Kami merancang infrastruktur kelas dunia untuk kebutuhan perangkat lunak dan bisnis modern Anda.
                     </p>
                 </motion.div>
 
-                {/* SLIDE 2: AI AUTOMATION */}
+                {/* SLIDE 2: AI AUTOMATION (Left-aligned Asymmetrical) */}
                 <motion.div 
                     style={{ opacity: s2Opacity, scale: s2Scale }}
-                    className="absolute top-0 left-0 h-full w-full flex flex-col items-center justify-center text-center pointer-events-none z-[10] px-6 will-change-transform"
+                    className="absolute top-0 left-0 h-full w-full flex flex-col items-start justify-center text-left pointer-events-none z-[10] px-6 md:px-32 will-change-transform"
                 >
-                    <div className="mb-6 inline-flex rounded-full border border-blue-500/20 bg-black/40 px-6 py-2 backdrop-blur-xl text-xs font-bold tracking-[0.3em] text-blue-200 uppercase">
+                    <div className="mb-6 inline-flex rounded-full border border-red-500/20 bg-black/40 px-6 py-2 backdrop-blur-xl text-xs font-bold tracking-[0.3em] text-red-200 uppercase">
                         Phase 02
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black leading-tight text-white mb-6 tracking-tighter drop-shadow-2xl">
-                        AI Automation & <br/>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-500">Premium Workspace</span>
+                        <HackerText text="AI Automation &" progress={scrollYProgress} range={[0.35, 0.50]} /> <br/>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500">
+                            <HackerText text="Core Penetration" progress={scrollYProgress} range={[0.40, 0.55]} />
+                        </span>
                     </h2>
                     <p className="max-w-2xl text-lg md:text-2xl text-zinc-300 drop-shadow-lg leading-relaxed">
-                        Tingkatkan efisiensi dengan sistem otomatisasi masa depan. Lingkungan kerja digital tanpa hambatan dengan keamanan tingkat enterprise.
+                        Tingkatkan efisiensi dengan sistem otomatisasi masa depan. Menembus batas performa server tradisional.
                     </p>
                 </motion.div>
 
@@ -111,8 +127,10 @@ export default function Hero() {
                         Phase 03
                     </div>
                     <h2 className="text-5xl md:text-7xl font-black leading-tight text-white mb-6 tracking-tighter drop-shadow-2xl">
-                        Instant <br/>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-500">Cloud Delivery</span>
+                        <HackerText text="Instant" progress={scrollYProgress} range={[0.60, 0.75]} /> <br/>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-500">
+                            <HackerText text="Cloud Delivery" progress={scrollYProgress} range={[0.65, 0.80]} />
+                        </span>
                     </h2>
                     <p className="max-w-2xl text-lg md:text-2xl text-zinc-300 drop-shadow-lg leading-relaxed">
                         Distribusi aset digital secara real-time. Skalabilitas tanpa batas untuk mendukung pertumbuhan ekosistem Anda.
@@ -127,12 +145,14 @@ export default function Hero() {
                     <h2 className="text-5xl md:text-7xl font-black text-white mb-10 tracking-tighter drop-shadow-2xl">
                         Ready to Initiate?
                     </h2>
-                    <button className="group relative overflow-hidden rounded-full bg-white px-12 py-5 font-bold text-black transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.2)]">
-                        <span className="relative z-10">Access The Core</span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="absolute inset-0 bg-white group-hover:opacity-0 transition-opacity duration-300" />
-                        <span className="absolute inset-0 z-10 flex items-center justify-center text-transparent group-hover:text-white transition-colors duration-300 pointer-events-none">Access The Core</span>
-                    </button>
+                    <MagneticButton>
+                        <button className="group relative overflow-hidden rounded-full bg-white px-12 py-5 font-bold text-black transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+                            <span className="relative z-10">Access The Core</span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <div className="absolute inset-0 bg-white group-hover:opacity-0 transition-opacity duration-300" />
+                            <span className="absolute inset-0 z-10 flex items-center justify-center text-transparent group-hover:text-white transition-colors duration-300 pointer-events-none">Access The Core</span>
+                        </button>
+                    </MagneticButton>
                     
                     <div className="mt-32 pt-10 border-t border-white/10 w-full max-w-4xl text-zinc-500 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
                         <p>&copy; {new Date().getFullYear()} GlobalKeyZone. All rights reserved.</p>

@@ -1,7 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { ReactNode } from "react"
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
+import { ReactNode, MouseEvent } from "react"
 
 const BENTO_CARDS = [
   {
@@ -33,6 +33,57 @@ const BENTO_CARDS = [
     icon: "⚡",
   },
 ]
+
+function GlowCard({ card }: { card: typeof BENTO_CARDS[0] }) {
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect()
+    mouseX.set(clientX - left)
+    mouseY.set(clientY - top)
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: card.delay }}
+      onMouseMove={handleMouseMove}
+      className={`group relative overflow-hidden rounded-[2rem] border border-white/10 backdrop-blur-xl p-8 transition-all hover:border-cyan-500/30 ${card.className}`}
+    >
+      {/* GLOW TRACING SPOTLIGHT */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              650px circle at ${mouseX}px ${mouseY}px,
+              rgba(34, 211, 238, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      
+      <div className="relative z-10 flex h-full flex-col justify-between">
+        <div className="text-4xl filter drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
+          {card.icon}
+        </div>
+        
+        <div>
+          <h3 className="mb-3 text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+            {card.title}
+          </h3>
+          <p className="text-zinc-400 font-medium leading-relaxed">
+            {card.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 export default function BentoGrid() {
   return (
@@ -69,32 +120,7 @@ export default function BentoGrid() {
         {/* BENTO GRID */}
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-6 auto-rows-[250px]">
           {BENTO_CARDS.map((card, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: card.delay }}
-              className={`group relative overflow-hidden rounded-[2rem] border border-white/10 backdrop-blur-xl p-8 transition-all hover:border-cyan-500/30 ${card.className}`}
-            >
-              {/* HOVER GLOW */}
-              <div className="absolute -inset-px rounded-[2rem] bg-gradient-to-b from-white/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              
-              <div className="relative z-10 flex h-full flex-col justify-between">
-                <div className="text-4xl filter drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
-                  {card.icon}
-                </div>
-                
-                <div>
-                  <h3 className="mb-3 text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
-                    {card.title}
-                  </h3>
-                  <p className="text-zinc-400 font-medium leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+            <GlowCard key={idx} card={card} />
           ))}
         </div>
 
