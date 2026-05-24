@@ -3,25 +3,22 @@
 import { Canvas } from '@react-three/fiber'
 import { Float, MeshDistortMaterial, Sphere } from '@react-three/drei'
 
-function CoreOrb() {
+function Orb() {
   return (
-    <Float
-      speed={3}
-      rotationIntensity={2}
-      floatIntensity={3}
-    >
-      <Sphere args={[1.5, 128, 128]}>
+    <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
+      <Sphere args={[1, 64, 64]} scale={1.8}>
         <MeshDistortMaterial
-          color="#00ffff"
-          emissive="#00ffff"
-          emissiveIntensity={2}
-          distort={0.4}
-          speed={2}
-          roughness={0}
+          color="#00d9ff"
+          distort={0.3}
+          speed={1.8}
+          roughness={0.4}
+          metalness={0.8}
+          opacity={0.35}
+          transparent
         />
       </Sphere>
     </Float>
-  )
+  );
 }
 
 export default function AICore() {
