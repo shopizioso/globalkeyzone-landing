@@ -12,13 +12,12 @@ import { Suspense, useRef } from "react"
 
 function Robot() {
   const robot = useGLTF("/models/robot.glb")
-
   const ref = useRef<any>()
 
   useFrame((state) => {
     if (ref.current) {
       ref.current.rotation.y =
-        Math.sin(state.clock.elapsedTime * 0.5) * 0.5
+        Math.sin(state.clock.elapsedTime * 0.4) * 0.3
 
       ref.current.position.y =
         Math.sin(state.clock.elapsedTime) * 0.1
@@ -30,8 +29,8 @@ function Robot() {
       <primitive
         ref={ref}
         object={robot.scene}
-        scale={0}
-        position={[0, -4, 0]}
+        scale={8}
+        position={[0, -6, 0]}
       />
     </Float>
   )
@@ -39,19 +38,31 @@ function Robot() {
 
 export default function AICore() {
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-0 opacity-90">
+      <Canvas camera={{ position: [0, 0, 14], fov: 45 }}>
 
-      <Canvas camera={{ position: [0, 0, 12], fov: 50 }}>
-
-        <ambientLight intensity={2} />
+        <ambientLight intensity={4} />
 
         <directionalLight
-          position={[5, 5, 5]}
-          intensity={3}
-          color="#7dd3fc"
+          position={[10, 10, 10]}
+          intensity={6}
+          color="#60a5fa"
         />
 
-        <Environment preset="city" />
+        <pointLight
+          position={[-10, -10, -10]}
+          intensity={5}
+          color="#9333ea"
+        />
+
+        <spotLight
+          position={[0, 15, 10]}
+          intensity={8}
+          angle={0.5}
+          penumbra={1}
+        />
+
+        <Environment preset="night" />
 
         <Suspense fallback={null}>
           <Robot />
@@ -60,11 +71,11 @@ export default function AICore() {
         <OrbitControls
           enableZoom={false}
           autoRotate
-          autoRotateSpeed={1}
+          autoRotateSpeed={0.8}
+          enablePan={false}
         />
 
       </Canvas>
-
     </div>
   )
 }
