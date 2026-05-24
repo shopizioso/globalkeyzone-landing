@@ -1,127 +1,79 @@
 "use client"
 
-import { Canvas } from "@react-three/fiber"
-import {
-  Float,
-  OrbitControls,
-  Environment,
-  Sparkles,
-  Html,
-} from "@react-three/drei"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { OrbitControls, Float, Sphere, MeshDistortMaterial } from "@react-three/drei"
+import { useRef } from "react"
+import * as THREE from "three"
 
-function CoreSphere() {
+function EnergyCore() {
+  const sphereRef = useRef<THREE.Mesh>(null)
+
+  // Subtle pulsing animation
+  useFrame((state) => {
+    if (sphereRef.current) {
+      sphereRef.current.scale.x = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05
+      sphereRef.current.scale.y = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05
+      sphereRef.current.scale.z = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05
+    }
+  })
+
   return (
-    <Float
-      speed={2}
-      rotationIntensity={2}
-      floatIntensity={2}
-    >
+    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+      {/* OUTER GLOW RING */}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[2.5, 0.02, 16, 100]} />
+        <meshBasicMaterial color="#0ea5e9" transparent opacity={0.5} />
+      </mesh>
+      
+      <mesh rotation={[Math.PI / 2.5, 0.5, 0]}>
+        <torusGeometry args={[3, 0.01, 16, 100]} />
+        <meshBasicMaterial color="#a855f7" transparent opacity={0.3} />
+      </mesh>
 
-      {/* MAIN CORE */}
-      <mesh>
-        <sphereGeometry args={[1.4, 128, 128]} />
-
-        <meshStandardMaterial
-          color="#67e8f9"
+      {/* DISTORTED ENERGY SPHERE */}
+      <Sphere ref={sphereRef} args={[1.5, 64, 64]}>
+        <MeshDistortMaterial
+          color="#083344"
           emissive="#06b6d4"
-          emissiveIntensity={4}
-          roughness={0.05}
-          metalness={1}
+          emissiveIntensity={2}
+          distort={0.4}
+          speed={2}
+          roughness={0.2}
+          metalness={0.8}
         />
-      </mesh>
+      </Sphere>
 
-      {/* OUTER RING */}
-      <mesh rotation={[0.5, 0.5, 0]}>
-        <torusGeometry args={[2.2, 0.03, 32, 200]} />
-
-        <meshStandardMaterial
-          color="#38bdf8"
-          emissive="#0ea5e9"
-          emissiveIntensity={4}
-        />
-      </mesh>
-
-      {/* SECOND RING */}
-      <mesh rotation={[1.2, 0.3, 1]}>
-        <torusGeometry args={[2.8, 0.02, 32, 200]} />
-
-        <meshStandardMaterial
-          color="#a855f7"
-          emissive="#9333ea"
-          emissiveIntensity={5}
-        />
-      </mesh>
-
-      {/* INNER GLOW */}
-      <mesh>
-        <sphereGeometry args={[0.5, 64, 64]} />
-
+      {/* INNER SOLID CORE */}
+      <Sphere args={[0.8, 32, 32]}>
         <meshStandardMaterial
           color="#ffffff"
-          emissive="#ffffff"
-          emissiveIntensity={8}
+          emissive="#22d3ee"
+          emissiveIntensity={4}
+          roughness={0}
+          metalness={1}
         />
-      </mesh>
-
+      </Sphere>
     </Float>
   )
 }
 
 export default function AICore() {
   return (
-    <div className="absolute inset-0 z-0 opacity-70">
+    <div className="absolute inset-0 z-0">
+      <Canvas camera={{ position: [0, 0, 8], fov: 45 }} dpr={[1, 2]}>
+        <ambientLight intensity={1} />
+        <directionalLight position={[5, 5, 5]} intensity={2} color="#a855f7" />
+        <directionalLight position={[-5, -5, -5]} intensity={2} color="#22d3ee" />
 
-      <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
+        <EnergyCore />
 
-        {/* LIGHTS */}
-        <ambientLight intensity={1.2} />
-
-        <directionalLight
-          position={[5, 5, 5]}
-          intensity={3}
-          color="#67e8f9"
-        />
-
-        <pointLight
-          position={[-5, -5, -5]}
-          intensity={4}
-          color="#9333ea"
-        />
-
-        {/* ENVIRONMENT */}
-        <Environment preset="city" />
-
-        {/* PARTICLES */}
-        <Sparkles
-          count={300}
-          scale={15}
-          size={3}
-          speed={0.4}
-        />
-
-        {/* CORE */}
-        <CoreSphere />
-
-        {/* FLOATING TEXT */}
-        <Html position={[0, -3.5, 0]} center>
-          <div className="text-cyan-300 text-sm tracking-[0.4em] uppercase opacity-70">
-            AI DIGITAL CORE
-          </div>
-        </Html>
-
-        {/* CAMERA ROTATION */}
         <OrbitControls
           enableZoom={false}
           enablePan={false}
           autoRotate
-          autoRotateSpeed={0.8}
+          autoRotateSpeed={1.0}
         />
-
       </Canvas>
-
-      {/* EXTRA SCREEN GLOW */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.15),transparent_60%)]" />
-
     </div>
   )
 }
