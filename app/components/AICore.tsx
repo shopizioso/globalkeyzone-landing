@@ -30,8 +30,8 @@ function Robot() {
       <primitive
         ref={ref}
         object={robot.scene}
-        scale={2.5}
-        position={[0, -2, 0]}
+        scale={0}
+        position={[0, -4, 0]}
       />
     </Float>
   )
@@ -41,7 +41,7 @@ export default function AICore() {
   return (
     <div className="absolute inset-0 z-0">
 
-      <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0, 12], fov: 50 }}>
 
         <ambientLight intensity={2} />
 
