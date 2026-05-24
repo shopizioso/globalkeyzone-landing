@@ -1,20 +1,27 @@
 "use client"
 
 import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls, useGLTF, Float } from "@react-three/drei"
-import { useRef } from "react"
+import {
+  OrbitControls,
+  useGLTF,
+  Environment,
+  Float
+} from "@react-three/drei"
 
-function RobotModel() {
+import { Suspense, useRef } from "react"
+
+function Robot() {
   const robot = useGLTF("/models/robot.glb")
+
   const ref = useRef<any>()
 
   useFrame((state) => {
     if (ref.current) {
       ref.current.rotation.y =
-        Math.sin(state.clock.elapsedTime * 0.5) * 0.3
+        Math.sin(state.clock.elapsedTime * 0.5) * 0.5
 
       ref.current.position.y =
-        Math.sin(state.clock.elapsedTime) * 0.15
+        Math.sin(state.clock.elapsedTime) * 0.1
     }
   })
 
@@ -23,8 +30,8 @@ function RobotModel() {
       <primitive
         ref={ref}
         object={robot.scene}
-        scale={1.8}
-        position={[0, -1, 0]}
+        scale={2.5}
+        position={[0, -2, 0]}
       />
     </Float>
   )
@@ -32,31 +39,32 @@ function RobotModel() {
 
 export default function AICore() {
   return (
-    <div className="absolute inset-0 z-0 opacity-80">
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <ambientLight intensity={1.5} />
+    <div className="absolute inset-0 z-0">
+
+      <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
+
+        <ambientLight intensity={2} />
 
         <directionalLight
           position={[5, 5, 5]}
-          intensity={2}
+          intensity={3}
           color="#7dd3fc"
         />
 
-        <pointLight
-          position={[-5, -5, -5]}
-          intensity={2}
-          color="#9333ea"
-        />
+        <Environment preset="city" />
 
-        <RobotModel />
+        <Suspense fallback={null}>
+          <Robot />
+        </Suspense>
 
         <OrbitControls
           enableZoom={false}
           autoRotate
           autoRotateSpeed={1}
-          enablePan={false}
         />
+
       </Canvas>
+
     </div>
   )
 }
