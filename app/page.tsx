@@ -51,7 +51,7 @@ export default function Home() {
       {/* HERO */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* BACKGROUND */}
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/10 via-black to-purple-600/20" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#050816] to-black />
 
         {/* GRID */}
         <div className="absolute inset-0 opacity-20">
